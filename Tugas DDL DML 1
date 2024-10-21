@@ -1,0 +1,103 @@
+-- Statement 1: Membuat tabel jenjang_pendidikan
+CREATE TABLE jenjang_pendidikan (  
+    Kode_jenjang_Pendidikan CHAR(1) PRIMARY KEY,  
+    Nama_Jenjang CHAR(11)
+);
+
+-- Statement 2: Membuat tabel Dept
+CREATE TABLE Dept(  
+    dno INTEGER PRIMARY KEY,  
+    dname VARCHAR2(20) NOT NULL,  
+    dloc VARCHAR2(20)
+);
+
+-- Statement 3: Menambahkan data ke tabel Dept
+INSERT INTO Dept VALUES (1, 'Finance', 'main office');
+-- Statement 4: Menambahkan data ke tabel Dept
+INSERT INTO Dept VALUES (2, 'Sales', 'main office');
+
+-- Statement 5: Menampilkan data dari tabel Dept
+SELECT * FROM Dept;
+
+-- Statement 6: Menambahkan kolom job_id ke tabel Dept
+ALTER TABLE Dept  
+    ADD job_id CHAR(1);
+
+-- Statement 7: Menambahkan data baru ke tabel Dept
+INSERT INTO Dept VALUES (3, 'Human Resource', 'branch 1', 'A');
+
+-- Statement 8: Membuat tabel Employee
+CREATE TABLE Employee(  
+    empid CHAR(2),  
+    empname VARCHAR(20),  
+    PRIMARY KEY(empid)
+);
+
+-- Statement 9: Membuat tabel Dependent
+CREATE TABLE Dependent(  
+    dp_id INTEGER,  
+    dp_name VARCHAR(20)
+);
+
+-- Statement 10: Menambahkan kolom d_dno ke tabel Employee
+ALTER TABLE Employee  
+    ADD d_dno INTEGER;
+
+-- Statement 11: Menambahkan foreign key pada kolom d_dno di tabel Employee yang merujuk ke Dept(dno)
+ALTER TABLE Employee  
+    ADD CONSTRAINT fk_dno FOREIGN KEY (d_dno) REFERENCES Dept(dno);
+
+-- Statement 12: Menambahkan data ke tabel Employee
+INSERT INTO Employee VALUES ('ab', 'Surya', 1);
+
+-- Statement 13: Menampilkan semua data dari tabel Employee
+SELECT * FROM Employee;
+
+-- Statement 14: Menampilkan employee dengan join Dept
+SELECT Employee.empid, Employee.empname, Dept.dname   
+FROM Employee, Dept  
+WHERE Employee.d_dno = Dept.dno;
+
+-- Statement 15: Menampilkan employee dengan join Dept dan pencarian berdasarkan nama
+SELECT Employee.empname, Dept.dname   
+FROM Employee, Dept  
+WHERE Employee.d_dno = Dept.dno AND Employee.empname LIKE '%Surya%';
+
+-- Statement 16: Menampilkan employee dan Dept secara umum
+SELECT Employee.empname, Dept.dname   
+FROM Employee, Dept  
+WHERE Employee.d_dno = Dept.dno;
+
+-- Statement 17: Menambahkan data ke tabel jenjang_pendidikan
+INSERT INTO jenjang_pendidikan VALUES ('A', 'SD');
+-- Statement 18: Menambahkan data ke tabel jenjang_pendidikan
+INSERT INTO jenjang_pendidikan VALUES ('B', 'SMP');
+-- Statement 19: Menambahkan data ke tabel jenjang_pendidikan
+INSERT INTO jenjang_pendidikan VALUES ('C', 'SMA');
+-- Statement 20: Menambahkan data ke tabel jenjang_pendidikan
+INSERT INTO jenjang_pendidikan VALUES ('D', 'Universitas');
+
+-- Statement 21: Menampilkan semua data dari tabel jenjang_pendidikan
+SELECT * FROM jenjang_pendidikan ORDER BY Kode_jenjang_Pendidikan;
+
+-- Statement 22: Menampilkan semua data dari tabel Dept
+SELECT * FROM Dept ORDER BY dno;
+
+-- Statement 23: Menambahkan kolom fk_jejang_pendidikan ke tabel Dependent dengan foreign key ke tabel jenjang_pendidikan
+ALTER TABLE Dependent 
+    ADD fk_jejang_pendidikan CHAR(1),
+    ADD CONSTRAINT fk_jejang FOREIGN KEY (fk_jejang_pendidikan) REFERENCES jenjang_pendidikan(Kode_jenjang_Pendidikan);
+
+-- Statement 24: Menambahkan kolom fk_dept ke tabel Dependent dengan foreign key ke Dept(dno)
+ALTER TABLE Dependent 
+    ADD fk_dept INT,
+    ADD CONSTRAINT fk_departemen FOREIGN KEY (fk_dept) REFERENCES Dept(dno);
+
+-- Statement 25: Menambahkan kolom empid ke tabel Dependent dan foreign key ke Employee(empid)
+ALTER TABLE Dependent 
+    ADD empid CHAR(2),
+    ADD CONSTRAINT empid FOREIGN KEY (empid) REFERENCES Employee(empid);
+
+-- Statement 26: Menghapus kolom fk_dept dari tabel Dependent
+ALTER TABLE Dependent 
+    DROP COLUMN fk_dept;
